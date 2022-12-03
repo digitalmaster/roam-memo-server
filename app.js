@@ -4,8 +4,16 @@ const port = process.env.PORT || 3001;
 
 app.get("/", (req, res) => res.type('html').send(html));
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "https://roamresearch.com");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  next();
+});
+
 app.post("/save-roam-sr-data", (req, res) => {
-  console.log(req.body);
+  console.log('DEBUG:: ~ file: app.js:17 ~ req.body', req.body);
+  console.log('DEBUG:: ~ file: app.js:14 ~ req', req);
+
   res.send("OK");
 });
 
