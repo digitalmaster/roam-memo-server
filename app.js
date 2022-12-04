@@ -1,9 +1,17 @@
 const express = require("express");
 const app = express();
 const port = process.env.PORT || 3001;
+const bodyParser = require('body-parser')
 
 app.get("/", (req, res) => res.type('html').send(html));
 
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
+
+// Set CORS headers
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "https://roamresearch.com");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
@@ -11,8 +19,7 @@ app.use(function(req, res, next) {
 });
 
 app.post("/save-roam-sr-data", (req, res) => {
-  console.log('DEBUG:: ~ file: app.js:17 ~ req.body', req.body);
-  console.log('DEBUG:: ~ file: app.js:14 ~ req', req);
+  console.log('DEBUG:: ~ file: app.js:14 ~ req', req.body);
 
   res.send("OK");
 });
