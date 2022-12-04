@@ -18,10 +18,26 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.post("/save-roam-sr-data", (req, res) => {
-  console.log('DEBUG:: ~ file: app.js:14 ~ req', req.body);
+app.post("/save-roam-sr-data", async (req, res) => {
+  const { data, graphName, } = req.body;
+  const headers = req.headers;
 
-  res.send("OK");
+  try {
+    await fetch(`https://api.roamresearch.com/api/graph/${graphName}/write`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Authorization': req.headers.authorization,
+        'Content-Type': 'application/json',
+      }
+    });
+
+    res.send("OK");
+  } catch (error) {
+    console.log('Error Saving Roam Data', error);
+    res.status(error.status).send(error.message)
+  }
+
 });
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
